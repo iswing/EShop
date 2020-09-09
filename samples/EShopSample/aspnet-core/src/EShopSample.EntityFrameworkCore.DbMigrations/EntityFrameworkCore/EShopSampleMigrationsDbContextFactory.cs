@@ -16,7 +16,7 @@ namespace EShopSample.EntityFrameworkCore
             var configuration = BuildConfiguration();
 
             var builder = new DbContextOptionsBuilder<EShopSampleMigrationsDbContext>()
-                .UseSqlServer(configuration.GetConnectionString("Default"));
+                .UseMySql(configuration.GetConnectionString("Default"));
 
             return new EShopSampleMigrationsDbContext(builder.Options);
         }
