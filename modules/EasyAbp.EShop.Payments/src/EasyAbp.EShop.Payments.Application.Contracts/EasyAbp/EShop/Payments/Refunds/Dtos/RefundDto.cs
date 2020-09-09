@@ -8,6 +8,7 @@ namespace EasyAbp.EShop.Payments.Refunds.Dtos
     [Serializable]
     public class RefundDto : ExtensibleFullAuditedEntityDto<Guid>, IRefund
     {
+
         #region Base properties
 
         public Guid PaymentId { get; set; }

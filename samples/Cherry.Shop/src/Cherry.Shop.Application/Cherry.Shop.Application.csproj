@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>Cherry.Shop</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Cherry.Shop.Domain\Cherry.Shop.Domain.csproj" />
+    <ProjectReference Include="..\Cherry.Shop.Application.Contracts\Cherry.Shop.Application.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\integration\EasyAbp.EShop\src\EasyAbp.EShop.Application\EasyAbp.EShop.Application.csproj" />
+    <PackageReference Include="EasyAbp.PaymentService.Application" Version="1.2.2" />
+    <PackageReference Include="EasyAbp.PaymentService.WeChatPay.Application" Version="1.2.2" />
+
+    <PackageReference Include="EasyAbp.PaymentService.Prepayment.Application" Version="1.2.2" />
+    <PackageReference Include="Volo.Abp.Account.Application" Version="3.0.5" />
+    <PackageReference Include="Volo.Abp.Identity.Application" Version="3.0.5" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.Application" Version="3.0.5" />
+    <PackageReference Include="Volo.Abp.TenantManagement.Application" Version="3.0.5" />
+    <PackageReference Include="Volo.Abp.FeatureManagement.Application" Version="3.0.5" />
+  </ItemGroup>
+
+</Project>
