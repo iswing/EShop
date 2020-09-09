@@ -18,7 +18,6 @@ using Volo.Abp.Users;
 
 namespace Cherry.Shop
 {
-    [Dependency(ReplaceServices = true)]
     public class CherryOrderGenerator : NewOrderGenerator
     {
         private readonly IPaymentManager _paymentManager;
@@ -82,6 +81,7 @@ namespace Cherry.Shop
             IOrderNumberGenerator orderNumberGenerator, IProductSkuDescriptionProvider productSkuDescriptionProvider) :
             base(guidGenerator, currentTenant, currentUser, orderNumberGenerator, productSkuDescriptionProvider)
         {
+            _paymentManager = paymentManager;
             _paymentRepository = paymentRepository;
             _guidGenerator = guidGenerator;
             _currentTenant = currentTenant;

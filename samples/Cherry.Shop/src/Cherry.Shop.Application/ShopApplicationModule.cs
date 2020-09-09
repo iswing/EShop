@@ -1,7 +1,10 @@
 ﻿using EasyAbp.EShop;
+using EasyAbp.EShop.Orders.Orders;
 using EasyAbp.PaymentService;
 using EasyAbp.PaymentService.Prepayment;
 using EasyAbp.PaymentService.WeChatPay;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Volo.Abp.Account;
 using Volo.Abp.AutoMapper;
 using Volo.Abp.FeatureManagement;
@@ -24,15 +27,17 @@ namespace Cherry.Shop
         typeof(PaymentServiceApplicationModule),
         typeof(PaymentServiceWeChatPayApplicationModule),
         typeof(PaymentServicePrepaymentApplicationModule)
-        )]
+    )]
     public class ShopApplicationModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
-            Configure<AbpAutoMapperOptions>(options =>
-            {
-                options.AddMaps<ShopApplicationModule>();
-            });
+            Configure<AbpAutoMapperOptions>(options => { options.AddMaps<ShopApplicationModule>(); });
+
+
+            context.Services.Replace(
+                ServiceDescriptor.Transient<INewOrderGenerator, CherryOrderGenerator>()
+            );
         }
     }
 }

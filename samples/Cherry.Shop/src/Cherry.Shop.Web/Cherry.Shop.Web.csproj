@@ -48,6 +48,8 @@
 
     <ProjectReference Include="..\..\..\..\integration\EasyAbp.EShop\src\EasyAbp.EShop.Web\EasyAbp.EShop.Web.csproj" />
     <PackageReference Include="EasyAbp.PaymentService.Web" Version="1.2.2" />
+
+    <PackageReference Include="EasyAbp.PaymentService.Web" Version="1.2.2" />
     <PackageReference Include="EasyAbp.PaymentService.WeChatPay.Web" Version="1.2.2" />
     <PackageReference Include="EasyAbp.PaymentService.Prepayment.Web" Version="1.2.2" />
 

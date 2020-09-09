@@ -20,7 +20,6 @@ namespace Cherry.Shop
         typeof(AbpTenantManagementHttpApiClientModule),
         typeof(AbpFeatureManagementHttpApiClientModule),
            typeof(EShopHttpApiClientModule),
-        typeof(EShopPluginsBasketsHttpApiClientModule),
         typeof(PaymentServiceHttpApiClientModule),
         typeof(PaymentServiceWeChatPayHttpApiClientModule),
         typeof(PaymentServicePrepaymentHttpApiClientModule)
