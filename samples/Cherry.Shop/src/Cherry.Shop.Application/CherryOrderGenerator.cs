@@ -9,6 +9,7 @@ using EasyAbp.EShop.Products.Products;
 using EasyAbp.EShop.Products.Products.Dtos;
 using EasyAbp.PaymentService.Payments;
 using EasyAbp.PaymentService.WeChatPay;
+using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Guids;
 using Volo.Abp.MultiTenancy;
@@ -18,6 +19,26 @@ using Volo.Abp.Users;
 
 namespace Cherry.Shop
 {
+    [Dependency(ServiceLifetime.Singleton, ReplaceServices = true, TryRegister = true)]
+    public class CherryClaimPaymentOpenIdProvider : IPaymentOpenIdProvider
+    {
+        public const string OpenIdClaimType = "WeChatOpenId";
+
+        private readonly ICurrentUser _currentUser;
+
+        public CherryClaimPaymentOpenIdProvider(ICurrentUser currentUser)
+        {
+            _currentUser = currentUser;
+        }
+
+        public Task<string> FindUserOpenIdAsync(string appId, Guid userId)
+        {
+            return Task.FromResult(userId == _currentUser.Id
+                ? _currentUser.FindClaim(OpenIdClaimType)?.Value
+                : null);
+        }
+    }
+
     public class CherryOrderGenerator : NewOrderGenerator
     {
         private readonly IPaymentManager _paymentManager;
@@ -45,7 +66,7 @@ namespace Cherry.Shop
             }
 
 
-            var payment = new Payment(_guidGenerator.Create(), _currentTenant.GetId(),
+            var payment = new Payment(_guidGenerator.Create(), _currentTenant.Id,
                 _currentUser.GetId(),
                 WeChatPayPaymentServiceProvider.PaymentMethod, order.Currency,
                 order.OrderLines.Select(item => item.TotalPrice).Sum(),
@@ -54,9 +75,17 @@ namespace Cherry.Shop
             await _paymentRepository.InsertAsync(payment, autoSave: true);
 
             //微信统一下单
-            await _paymentManager.StartPaymentAsync(payment);
+            await _paymentManager.StartPaymentAsync(payment,
+                new[]
+                {
+                    new {key = "appid", value = "wxb66cbd34dd301219"},
+                    new {key = "attach", value = "音桃引擎"},
+                    // new {key = "detail", value = "深圳分店"},
+                    new {key = "trade_type", value = "NATIVE"},
+                    new {key = "body", value = order.OrderLines.Select(x => x.SkuName).JoinAsString("")},
+                }.ToDictionary(x => x.key, x => x.value as object));
 
-            payment.MapExtraPropertiesTo(order);
+            payment.MapExtraPropertiesTo(order, MappingPropertyDefinitionChecks.None);
 
             return order;
         }
